@@ -16,7 +16,7 @@ public class TestController {
      * @param parame
      * @return
      */
-    @GetMapping(value = "/health", produces = "application/json;charset=utf-8")
+    @GetMapping(value = "health", produces = "application/json;charset=utf-8")
     public String health(String parame){
         return parame;
     }
