@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bd.read.repository.THistoricalReadingMapper">
+  <resultMap id="BaseResultMap" type="com.bd.read.entity.model.THistoricalReading">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="book_name" jdbcType="VARCHAR" property="bookName" />
+    <result column="author" jdbcType="VARCHAR" property="author" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="read_flag" jdbcType="INTEGER" property="readFlag" />
+    <result column="begintime" jdbcType="TIMESTAMP" property="begintime" />
+    <result column="endtime" jdbcType="TIMESTAMP" property="endtime" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
+    <result column="valid_mark" jdbcType="INTEGER" property="validMark" />
+    <result column="screenshot_name" jdbcType="VARCHAR" property="screenshotName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, book_name, author, remark, read_flag, begintime, endtime, createtime, updatetime, valid_mark, screenshot_name
+  </sql>
+  
+  <!-- 根据阅读状态获取今年的阅读历史数据 -->
+  <select id="findByReadFlag" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_historical_reading
+    where DATE_FORMAT(endtime,'%Y') = DATE_FORMAT(CURDATE( ),'%Y')
+    and read_flag = #{readFlag,jdbcType=INTEGER}
+    and valid_mark = 1
+    order by endtime DESC
+  </select>
+
+  <!-- 累计阅读量 -->
+  <select id="countReadNumber" resultType="java.lang.Integer">
+    select
+    count(*)
+    from t_historical_reading
+    where valid_mark = 1
+  </select>
+  
+  <!-- 复合条件获取阅读书籍列表信息 -->
+  <select id="findAllByQuery" parameterType="com.bd.read.entity.model.THistoricalReading" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_historical_reading
+    <where>
+    	<if test="bookName != null and bookName != '' ">
+    		and book_name like concat('%', #{bookName,jdbcType=VARCHAR}, '%')
+    	</if>
+    	<if test="author != null and author != '' ">
+    		and author like concat('%', #{author,jdbcType=VARCHAR}, '%')
+    	</if>
+    	<if test="readFlag != null and readFlag != '' ">
+    		and read_flag =#{readFlag,jdbcType=INTEGER}
+    	</if>
+    	<if test="begintime != null">
+    		<![CDATA[ and begintime >= #{begintime} ]]>
+    	</if>
+    	<if test="endtime != null">
+    		<![CDATA[ and endtime <= #{endtime} ]]>
+    	</if>
+    	and valid_mark = 1
+    </where>
+    order by begintime DESC
+  </select>
+  
+  <!-- 根据主键获取阅读信息 -->
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_historical_reading
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <!-- 删除阅读信息 -->
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from t_historical_reading
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  
+  <!-- 逻辑删除阅读信息 -->
+  <update id="deleteById" parameterType="java.lang.Long">
+    update t_historical_reading
+    set valid_mark = 0
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <insert id="insert" parameterType="com.bd.read.entity.model.THistoricalReading">
+    insert into t_historical_reading (id, book_name, author, 
+      remark, read_flag, begintime, 
+      endtime, createtime, updatetime
+      )
+    values (#{id,jdbcType=BIGINT}, #{bookName,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR}, #{readFlag,jdbcType=INTEGER}, #{begintime,jdbcType=TIMESTAMP}, 
+      #{endtime,jdbcType=TIMESTAMP}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  
+  <!-- 添加阅读信息
+  		useGeneratedKeys="true"：开启主键自动返回
+  		keyProperty="id"：返回主键的ID字段名
+  		keyColumn="id"：实体对象对应的属性名
+   -->
+  <insert id="insertSelective" parameterType="com.bd.read.entity.model.THistoricalReading"
+  useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    insert into t_historical_reading
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bookName != null">
+        book_name,
+      </if>
+      <if test="author != null">
+        author,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="readFlag != null">
+        read_flag,
+      </if>
+      <if test="begintime != null">
+        begintime,
+      </if>
+      <if test="endtime != null">
+        endtime,
+      </if>
+      <if test="screenshotName != null">
+        screenshot_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bookName != null">
+        #{bookName,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="readFlag != null">
+        #{readFlag,jdbcType=INTEGER},
+      </if>
+      <if test="begintime != null">
+        #{begintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="screenshotName != null">
+        #{screenshotName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <!-- 更新阅读信息 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.bd.read.entity.model.THistoricalReading">
+    update t_historical_reading
+    <set>
+      <if test="bookName != null">
+        book_name = #{bookName,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null">
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="readFlag != null">
+        read_flag = #{readFlag,jdbcType=INTEGER},
+      </if>
+      <if test="begintime != null">
+        begintime = #{begintime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null">
+        endtime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="screenshotName != null">
+        screenshot_name = #{screenshotName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.bd.read.entity.model.THistoricalReading">
+    update t_historical_reading
+    set book_name = #{bookName,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      read_flag = #{readFlag,jdbcType=INTEGER},
+      begintime = #{begintime,jdbcType=TIMESTAMP},
+      endtime = #{endtime,jdbcType=TIMESTAMP},
+      createtime = #{createtime,jdbcType=TIMESTAMP},
+      updatetime = #{updatetime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
