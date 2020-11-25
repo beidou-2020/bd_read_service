@@ -13,9 +13,10 @@
     <result column="updatetime" jdbcType="TIMESTAMP" property="updatetime" />
     <result column="valid_mark" jdbcType="INTEGER" property="validMark" />
     <result column="screenshot_name" jdbcType="VARCHAR" property="screenshotName" />
+    <result column="category" jdbcType="INTEGER" property="category" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, book_name, author, remark, read_flag, begintime, endtime, createtime, updatetime, valid_mark, screenshot_name
+    id, book_name, author, remark, read_flag, begintime, endtime, createtime, updatetime, valid_mark, screenshot_name, category
   </sql>
   
   <!-- 根据阅读状态获取今年的阅读历史数据 -->
@@ -85,11 +86,11 @@
   </update>
   
   <insert id="insert" parameterType="com.bd.read.entity.model.THistoricalReading">
-    insert into t_historical_reading (id, book_name, author, 
+    insert into t_historical_reading (id, book_name, category, author,
       remark, read_flag, begintime, 
       endtime, createtime, updatetime
       )
-    values (#{id,jdbcType=BIGINT}, #{bookName,jdbcType=VARCHAR}, #{author,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=BIGINT}, #{bookName,jdbcType=VARCHAR}, #{category,jdbcType=INTEGER}, #{author,jdbcType=VARCHAR},
       #{remark,jdbcType=VARCHAR}, #{readFlag,jdbcType=INTEGER}, #{begintime,jdbcType=TIMESTAMP}, 
       #{endtime,jdbcType=TIMESTAMP}, #{createtime,jdbcType=TIMESTAMP}, #{updatetime,jdbcType=TIMESTAMP}
       )
@@ -125,6 +126,9 @@
       <if test="screenshotName != null">
         screenshot_name,
       </if>
+      <if test="category != null">
+        category,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="bookName != null">
@@ -147,6 +151,9 @@
       </if>
       <if test="screenshotName != null">
         #{screenshotName,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -175,6 +182,9 @@
       </if>
       <if test="screenshotName != null">
         screenshot_name = #{screenshotName,jdbcType=VARCHAR},
+      </if>
+      <if test="category != null">
+        category = #{category,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}

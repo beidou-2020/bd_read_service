@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
@@ -46,5 +47,11 @@ public class AddReadParam {
 	 * 阅读截图名(存储在文件服务器上的图片路径)
 	 */
 	private String screenshotName;
+
+    /**
+     * 阅读内容分类
+     */
+    @NotNull(message = "添加阅读信息时内容分类不能为空")
+    private Integer category;
     
 }
