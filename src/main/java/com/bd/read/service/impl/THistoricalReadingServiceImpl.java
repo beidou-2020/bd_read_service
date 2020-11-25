@@ -14,8 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
+
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -78,7 +82,15 @@ public class THistoricalReadingServiceImpl implements THistoricalReadingService 
 	public Integer deleteById(Long id) {
 		return tHistoricalReadingMapper.deleteById(id);
 	}
-	
-	
 
+	@Override
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+	public Integer batchDelete(String idListStr) {
+		List<Long> idList = Arrays.stream(idListStr.split(",")).
+				map(id -> Long.parseLong(id)).collect(Collectors.toList());
+		if (CollectionUtils.isEmpty(idList)){
+			return 0;
+		}
+		return tHistoricalReadingMapper.batchDelete(idList);
+	}
 }

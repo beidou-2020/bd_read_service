@@ -4,12 +4,15 @@ import com.bd.read.controller.common.Result;
 import com.bd.read.entity.dto.AddReadParam;
 import com.bd.read.entity.dto.PageParam;
 import com.bd.read.entity.dto.UpdateReadParam;
+import com.bd.read.entity.enumerate.ResultCode;
 import com.bd.read.entity.model.THistoricalReading;
 import com.bd.read.entity.query.ReadQuery;
 import com.bd.read.service.THistoricalReadingService;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
@@ -113,7 +116,22 @@ public class ReadController {
 		return Result.ok(count);
 	}
 
+	/**
+	 * 批量删除
+	 * @param idListStr
+	 * @return
+	 */
+	@PostMapping("/batchDelete")
+	@ResponseBody
+	public Result batchDelete(@RequestParam("idListStr") String idListStr){
+		// 参数不能为空
+		if (StringUtils.isEmpty(idListStr)){
+			return Result.fail(ResultCode.PARAM_ERROR.code(), ResultCode.PARAM_ERROR.msg());
+		}
 
+		Integer data = tHistoricalReadingService.batchDelete(idListStr);
+		return Result.ok(data);
+	}
 	
 	
 

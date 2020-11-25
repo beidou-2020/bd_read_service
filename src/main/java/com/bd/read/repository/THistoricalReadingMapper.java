@@ -64,4 +64,11 @@ public interface THistoricalReadingMapper {
     int updateByPrimaryKeySelective(THistoricalReading record);
 
     int updateByPrimaryKey(THistoricalReading record);
+
+	/**
+	 * 批量删除阅读信息
+	 * @param list
+	 * @return
+	 */
+	Integer batchDelete(List<Long> list);
 }

@@ -64,5 +64,11 @@ public interface THistoricalReadingService {
      * @return
      */
     Integer deleteById(Long id);
+
+	/**
+	 * 批量删除阅读信息
+	 * @return
+	 */
+	Integer batchDelete(String idListStr);
 	
 }

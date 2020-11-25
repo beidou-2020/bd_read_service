@@ -202,4 +202,13 @@
       updatetime = #{updatetime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <!--批量删除阅读信息-->
+  <update id="batchDelete" parameterType="java.util.List">
+    update t_historical_reading set valid_mark = 0
+    where id in
+    <foreach collection ="list" item="id" separator ="," open="(" close=")">
+      #{id, jdbcType=BIGINT}
+    </foreach>
+  </update>
 </mapper>
