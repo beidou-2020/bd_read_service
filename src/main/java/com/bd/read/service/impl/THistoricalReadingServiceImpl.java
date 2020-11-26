@@ -9,6 +9,7 @@ import com.bd.read.entity.query.ReadQuery;
 import com.bd.read.repository.THistoricalReadingMapper;
 import com.bd.read.service.THistoricalReadingService;
 import com.bd.read.util.BeanUtil;
+import com.bd.read.util.DateTimeUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +20,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -102,7 +104,7 @@ public class THistoricalReadingServiceImpl implements THistoricalReadingService 
 			Integer result = tHistoricalReadingMapper.timeOutReadInfo(id);
 			return result;
 		}catch (Exception ex){
-			log.error("暂停ID：{}的阅读信息异常", JSONObject.toJSONString(id));
+			log.error("暂停ID：{}的阅读信息异常。", JSONObject.toJSONString(id), ex);
 		}
 
 		return 0;
@@ -112,10 +114,11 @@ public class THistoricalReadingServiceImpl implements THistoricalReadingService 
 	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 	public Integer restartReadInfo(Long id) {
 		try{
-			Integer result = tHistoricalReadingMapper.restartReadInfo(id);
+			Date newEndTime = DateTimeUtils.getDateAfter(new Date(), 7);
+			Integer result = tHistoricalReadingMapper.restartReadInfo(id, newEndTime);
 			return result;
 		}catch (Exception ex){
-			log.error("重启ID：{}的阅读信息异常", JSONObject.toJSONString(id));
+			log.error("重启ID：{}的阅读信息异常。", JSONObject.toJSONString(id), ex);
 		}
 		return 0;
 	}

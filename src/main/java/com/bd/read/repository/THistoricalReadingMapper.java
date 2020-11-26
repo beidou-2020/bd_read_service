@@ -3,6 +3,7 @@ package com.bd.read.repository;
 import com.bd.read.entity.model.THistoricalReading;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface THistoricalReadingMapper {
@@ -84,5 +85,5 @@ public interface THistoricalReadingMapper {
 	 * @param id
 	 * @return
 	 */
-	Integer restartReadInfo(@Param("id") Long id);
+	Integer restartReadInfo(@Param("id") Long id, @Param("endtime") Date endtime);
 }
