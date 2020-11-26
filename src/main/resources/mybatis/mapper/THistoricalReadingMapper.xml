@@ -211,4 +211,18 @@
       #{id, jdbcType=BIGINT}
     </foreach>
   </update>
+
+  <!--暂停阅读-->
+  <update id="timeOutReadInfo" parameterType="java.lang.Long">
+    update t_historical_reading
+    set read_flag = 4
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <!--重新开始阅读-->
+  <update id="restartReadInfo" parameterType="java.lang.Long">
+    update t_historical_reading
+    set read_flag = 1
+    where id = #{id,jdbcType=BIGINT}
+  </update>
 </mapper>

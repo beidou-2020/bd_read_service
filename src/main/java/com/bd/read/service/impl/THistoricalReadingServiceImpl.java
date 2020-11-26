@@ -1,5 +1,6 @@
 package com.bd.read.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bd.read.entity.dto.AddReadParam;
 import com.bd.read.entity.dto.PageParam;
 import com.bd.read.entity.dto.UpdateReadParam;
@@ -92,5 +93,30 @@ public class THistoricalReadingServiceImpl implements THistoricalReadingService 
 			return 0;
 		}
 		return tHistoricalReadingMapper.batchDelete(idList);
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+	public Integer timeOutReadInfo(Long id) {
+		try{
+			Integer result = tHistoricalReadingMapper.timeOutReadInfo(id);
+			return result;
+		}catch (Exception ex){
+			log.error("暂停ID：{}的阅读信息异常", JSONObject.toJSONString(id));
+		}
+
+		return 0;
+	}
+
+	@Override
+	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+	public Integer restartReadInfo(Long id) {
+		try{
+			Integer result = tHistoricalReadingMapper.restartReadInfo(id);
+			return result;
+		}catch (Exception ex){
+			log.error("重启ID：{}的阅读信息异常", JSONObject.toJSONString(id));
+		}
+		return 0;
 	}
 }

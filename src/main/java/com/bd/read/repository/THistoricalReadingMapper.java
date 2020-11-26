@@ -71,4 +71,18 @@ public interface THistoricalReadingMapper {
 	 * @return
 	 */
 	Integer batchDelete(List<Long> list);
+
+	/**
+	 * 暂停阅读
+	 * @param id
+	 * @return
+	 */
+	Integer timeOutReadInfo(@Param("id") Long id);
+
+	/**
+	 * 重新开始阅读
+	 * @param id
+	 * @return
+	 */
+	Integer restartReadInfo(@Param("id") Long id);
 }

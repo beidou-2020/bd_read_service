@@ -1,5 +1,6 @@
 package com.bd.read.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bd.read.controller.common.Result;
 import com.bd.read.entity.dto.AddReadParam;
 import com.bd.read.entity.dto.PageParam;
@@ -131,6 +132,32 @@ public class ReadController {
 
 		Integer data = tHistoricalReadingService.batchDelete(idListStr);
 		return Result.ok(data);
+	}
+
+	/**
+	 * 暂停阅读信息
+	 * @param id
+	 * @return
+	 */
+	@PostMapping("/timeOut/{id}")
+	@ResponseBody
+	public Result timeOutReadInfo(@PathVariable(name = "id") Long id){
+		log.info("暂停阅读，ID：{}", JSONObject.toJSONString(id));
+		Integer result = tHistoricalReadingService.timeOutReadInfo(id);
+		return Result.ok(result);
+	}
+
+	/**
+	 * 重新开始阅读
+	 * @param id
+	 * @return
+	 */
+	@PostMapping("/restart/{id}")
+	@ResponseBody
+	public Result restartReadInfo(@PathVariable(name = "id") Long id){
+		log.info("重新开始阅读，ID：{}", JSONObject.toJSONString(id));
+		Integer result = tHistoricalReadingService.restartReadInfo(id);
+		return Result.ok(result);
 	}
 	
 	

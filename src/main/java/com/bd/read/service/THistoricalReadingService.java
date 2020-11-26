@@ -6,6 +6,7 @@ import com.bd.read.entity.dto.UpdateReadParam;
 import com.bd.read.entity.model.THistoricalReading;
 import com.bd.read.entity.query.ReadQuery;
 import com.github.pagehelper.PageInfo;
+
 import java.util.List;
 
 
@@ -70,5 +71,19 @@ public interface THistoricalReadingService {
 	 * @return
 	 */
 	Integer batchDelete(String idListStr);
+
+	/**
+	 * 暂停阅读
+	 * @param id
+	 * @return
+	 */
+	Integer timeOutReadInfo(Long id);
+
+	/**
+	 * 重新开始阅读
+	 * @param id
+	 * @return
+	 */
+	Integer restartReadInfo(Long id);
 	
 }
