@@ -83,7 +83,9 @@ public class THistoricalReadingServiceImpl implements THistoricalReadingService 
 	@Override
 	@Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
 	public Integer deleteById(Long id) {
-		return tHistoricalReadingMapper.deleteById(id);
+		// 获取当前登录的用户ID
+		long currLoginUserId = 1l;
+		return tHistoricalReadingMapper.deleteById(id, currLoginUserId);
 	}
 
 	@Override
@@ -94,7 +96,10 @@ public class THistoricalReadingServiceImpl implements THistoricalReadingService 
 		if (CollectionUtils.isEmpty(idList)){
 			return 0;
 		}
-		return tHistoricalReadingMapper.batchDelete(idList);
+
+		// 获取当前登录的用户ID
+		long currLoginUserId = 1l;
+		return tHistoricalReadingMapper.batchDelete(idList, currLoginUserId);
 	}
 
 	@Override

@@ -14,9 +14,12 @@
     <result column="valid_mark" jdbcType="INTEGER" property="validMark" />
     <result column="screenshot_name" jdbcType="VARCHAR" property="screenshotName" />
     <result column="category" jdbcType="INTEGER" property="category" />
+    <result column="removetime" jdbcType="TIMESTAMP" property="removetime" />
+    <result column="remove_user" jdbcType="BIGINT" property="removeUser" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, book_name, author, remark, read_flag, begintime, endtime, createtime, updatetime, valid_mark, screenshot_name, category
+    id, book_name, author, remark, read_flag, begintime, endtime,
+    createtime, updatetime, valid_mark, screenshot_name, category, removetime, remove_user
   </sql>
   
   <!-- 根据阅读状态获取今年的阅读历史数据 -->
@@ -59,7 +62,7 @@
     	<if test="endtime != null">
     		<![CDATA[ and endtime <= #{endtime} ]]>
     	</if>
-    	and valid_mark = 1
+    	and valid_mark = #{validMark,jdbcType=INTEGER}
     </where>
     order by begintime DESC
   </select>
@@ -79,9 +82,9 @@
   </delete>
   
   <!-- 逻辑删除阅读信息 -->
-  <update id="deleteById" parameterType="java.lang.Long">
+  <update id="deleteById">
     update t_historical_reading
-    set valid_mark = 0
+    set valid_mark = 0, removetime = now(), remove_user = #{removeUser,jdbcType=BIGINT}
     where id = #{id,jdbcType=BIGINT}
   </update>
   
@@ -204,8 +207,11 @@
   </update>
 
   <!--批量删除阅读信息-->
-  <update id="batchDelete" parameterType="java.util.List">
-    update t_historical_reading set valid_mark = 0
+  <update id="batchDelete">
+    update t_historical_reading
+    set valid_mark = 0,
+    removetime = now(),
+    remove_user = #{removeUser,jdbcType=BIGINT}
     where id in
     <foreach collection ="list" item="id" separator ="," open="(" close=")">
       #{id, jdbcType=BIGINT}

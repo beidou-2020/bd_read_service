@@ -33,5 +33,10 @@ public class ReadQuery {
      * 结束阅读时间
      */
     private Date endtime;
+
+    /**
+     * 默认查询未删除的
+     */
+    private Integer validMark = 1;
     
 }

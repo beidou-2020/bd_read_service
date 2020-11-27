@@ -39,7 +39,7 @@ public interface THistoricalReadingMapper {
      * @param id
      * @return
      */
-    Integer deleteById(@Param("id") Long id);
+    Integer deleteById(@Param("id") Long id, @Param("removeUser") Long removeUser);
 
     int insert(THistoricalReading record);
 
@@ -71,7 +71,7 @@ public interface THistoricalReadingMapper {
 	 * @param list
 	 * @return
 	 */
-	Integer batchDelete(List<Long> list);
+	Integer batchDelete(@Param("list") List<Long> list, @Param("removeUser") Long removeUser);
 
 	/**
 	 * 暂停阅读
