@@ -61,6 +61,13 @@ public class THistoricalReadingServiceImpl implements THistoricalReadingService 
 	public THistoricalReading addReadInfo(AddReadParam param) {
 		THistoricalReading reading = new THistoricalReading();
 		BeanUtil.copyProperties(param, reading);
+		try{
+			// 按照业务需求处理日期参数
+			reading.setBegintime(DateTimeUtils.removeDateHms(param.getBegintime().getTime()));
+			reading.setEndtime(DateTimeUtils.removeDateHms(param.getEndtime().getTime()));
+		}catch (Exception ex){
+			log.error("添加阅读计划时开始和结束时间参数处理异常，param:{}", JSONObject.toJSONString(param), ex);
+		}
 		tHistoricalReadingMapper.insertSelective(reading);
 		log.info("插入成功后的数据主键ID为：{}", reading.getId());
 		return reading;
@@ -76,6 +83,13 @@ public class THistoricalReadingServiceImpl implements THistoricalReadingService 
 	public THistoricalReading updateReadInfo(UpdateReadParam param) {
 		THistoricalReading reading = new THistoricalReading();
 		BeanUtil.copyProperties(param, reading);
+		try{
+			// 按照业务需求处理日期参数
+			reading.setBegintime(DateTimeUtils.removeDateHms(param.getBegintime().getTime()));
+			reading.setEndtime(DateTimeUtils.removeDateHms(param.getEndtime().getTime()));
+		}catch (Exception ex){
+			log.error("添加阅读计划时开始和结束时间参数处理异常，param:{}", JSONObject.toJSONString(param), ex);
+		}
 		tHistoricalReadingMapper.updateByPrimaryKeySelective(reading);
 		return reading;
 	}
