@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.jackson.JsonComponent;
 import org.springframework.context.annotation.Bean;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -25,7 +26,7 @@ public class ReturnDateFormatConfig {
     public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilder() {
 
         return builder -> {
-            TimeZone tz = TimeZone.getTimeZone("UTC");
+            TimeZone tz = TimeZone.getTimeZone("GMT+8");
             DateFormat df = new SimpleDateFormat(pattern);
             df.setTimeZone(tz);
             builder.failOnEmptyBeans(false)

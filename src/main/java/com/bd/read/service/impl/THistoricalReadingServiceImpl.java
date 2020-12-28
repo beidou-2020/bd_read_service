@@ -85,8 +85,8 @@ public class THistoricalReadingServiceImpl implements THistoricalReadingService 
 		BeanUtil.copyProperties(param, reading);
 		try{
 			// 按照业务需求处理日期参数
-			reading.setBegintime(DateTimeUtils.removeDateHms(param.getBegintime().getTime()));
-			reading.setEndtime(DateTimeUtils.removeDateHms(param.getEndtime().getTime()));
+			//reading.setBegintime(DateTimeUtils.removeDateHms(param.getBegintime().getTime()));
+			//reading.setEndtime(DateTimeUtils.removeDateHms(param.getEndtime().getTime()));
 		}catch (Exception ex){
 			log.error("添加阅读计划时开始和结束时间参数处理异常，param:{}", JSONObject.toJSONString(param), ex);
 		}

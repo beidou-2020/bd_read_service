@@ -5,7 +5,6 @@ import lombok.ToString;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 @Data
 @ToString
@@ -42,12 +41,12 @@ public class UpdateReadParam {
     /**
      * 开始阅读时间
      */
-    private Date begintime;
+    private String begintime;
 
     /**
      * 结束阅读时间
      */
-    private Date endtime;
+    private String endtime;
 
 	/**
 	 * 阅读截图名(存储在文件服务器上的图片路径)
