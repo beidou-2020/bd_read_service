@@ -72,9 +72,9 @@ public class ReadController {
 	 * @param id
 	 * @return
 	 */
-	@PostMapping(value = "/deleteById", produces = "application/json;charset=utf-8")
+	@PostMapping(value = "/deleteById/{id}", produces = "application/json;charset=utf-8")
 	@ResponseBody
-	public THistoricalReading deleteById(@RequestParam(name = "id", required = true) Long id) {
+	public THistoricalReading deleteById(@PathVariable("id") Long id) {
 		THistoricalReading readInfo = tHistoricalReadingService.findById(id);
 		if (Objects.isNull(readInfo)){
 			return null;
