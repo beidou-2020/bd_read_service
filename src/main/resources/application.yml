@@ -6,7 +6,7 @@ spring:
   application:
     name: read-service
   profiles:
-    active: dev
+    active: prod
   cloud:
     # 服务提供方
     consul:
@@ -14,7 +14,7 @@ spring:
         # 启用服务发现
         # enabled: true
         # 启用服务注册
-        register: true
+        register: false
         # 服务停止时取消注册
         deregister: true
         # 表示注册时使用IP而不是hostname
