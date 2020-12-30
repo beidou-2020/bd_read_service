@@ -4,7 +4,7 @@ server:
 
 spring:
   profiles:
-    active: pord
+    active: prod
 
 # mybatis集成
 mybatis:
