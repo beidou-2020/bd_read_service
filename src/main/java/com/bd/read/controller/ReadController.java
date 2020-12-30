@@ -110,7 +110,7 @@ public class ReadController {
 	 * 获取累计阅读量
 	 * @return
 	 */
-	@GetMapping("/countStudyNumber")
+	@GetMapping("/countReadNumber")
 	@ResponseBody
 	public Result countReadNumber(){
 		Integer count = tHistoricalReadingService.countReadNumber();
